@@ -16,6 +16,8 @@ export interface CompanyInputs {
   legalAddress: string;
   fiscalYear: number;
   reportScheme: string;
+  activityName: string; // Field of activity for the net-sales note (e.g. "Konsultatsiooniteenused")
+  priorYearRevenue: number; // Prior fiscal year net revenue (EUR) for comparative note
   opening: OpeningBalances;
 }
 
