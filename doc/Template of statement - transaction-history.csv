@@ -1,0 +1,3 @@
+Direction,Created on,Source name,Source amount (after fees),Source currency,Without VAT,VAT 24%,Target name,Reference
+IN,2025-07-02 09:24:39,Sender name,1893.23,EUR,1526.80,366.43,Receiver name,Eg. Invoice 1
+OUT,2025-07-03 12:00:43,Receiver name,2130.01,EUR,1717.75,412.26,Sender name,
