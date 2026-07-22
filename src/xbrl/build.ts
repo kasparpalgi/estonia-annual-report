@@ -5,7 +5,7 @@ import { INCOME_CONCEPTS, BALANCE_CONCEPTS, assertConceptsExist } from './concep
 // points at the core schema file; the register may require its hosted entry-point
 // URL instead (see doc/todo/004 human todo).
 const ENTITY_SCHEME = 'http://ariregister.rik.ee';
-const SCHEMA_REF = 'et-gaap-cor_2026-01-01.xsd';
+const SCHEMA_REF = 'https://xbrl.eesti.ee/taxonomy/et-gaap_2026-01-01/et-gaap-cor_2026-01-01.xsd';
 const NS = {
   xbrli: 'http://www.xbrl.org/2003/instance',
   link: 'http://www.xbrl.org/2003/linkbase',
