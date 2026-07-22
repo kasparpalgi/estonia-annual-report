@@ -41,20 +41,18 @@ export function buildXbrl(s: Statements): string {
   const y = c.fiscalYear;
   const I = 'I-end';
   const D = 'D-year';
-  const P = 'D-prior';
   const id = `    <xbrli:entity><xbrli:identifier scheme="${ENTITY_SCHEME}">${esc(c.registryCode)}</xbrli:identifier></xbrli:entity>`;
   const xmlns = Object.entries(NS)
     .map(([p, u]) => `  xmlns:${p}="${u}"`)
     .join('\n');
 
+  // The registry rejects files with more than one period, so only emit current-year facts.
   const netSalesTuple = [
     '  <et-gaap:NetSalesByOperatingActivitiesTuple>',
     `    <et-gaap:NetSalesByOperatingActivitiesName contextRef="${D}">${esc(c.activityName)}</et-gaap:NetSalesByOperatingActivitiesName>`,
     `    <et-gaap:NetSalesByOperatingActivitiesValue contextRef="${D}" unitRef="EUR" decimals="0">${Math.round(income.revenue)}</et-gaap:NetSalesByOperatingActivitiesValue>`,
-    `    <et-gaap:NetSalesByOperatingActivitiesValue contextRef="${P}" unitRef="EUR" decimals="0">${Math.round(c.priorYearRevenue)}</et-gaap:NetSalesByOperatingActivitiesValue>`,
     '  </et-gaap:NetSalesByOperatingActivitiesTuple>',
     money('NetSalesByOperatingActivitiesTotal', D, income.revenue),
-    money('NetSalesByOperatingActivitiesTotal', P, c.priorYearRevenue),
   ].join('\n');
 
   return [
@@ -68,10 +66,6 @@ export function buildXbrl(s: Statements): string {
     `  <xbrli:context id="${D}">`,
     id,
     `    <xbrli:period><xbrli:startDate>${y}-01-01</xbrli:startDate><xbrli:endDate>${y}-12-31</xbrli:endDate></xbrli:period>`,
-    '  </xbrli:context>',
-    `  <xbrli:context id="${P}">`,
-    id,
-    `    <xbrli:period><xbrli:startDate>${y - 1}-01-01</xbrli:startDate><xbrli:endDate>${y - 1}-12-31</xbrli:endDate></xbrli:period>`,
     '  </xbrli:context>',
     '  <xbrli:unit id="EUR"><xbrli:measure>iso4217:EUR</xbrli:measure></xbrli:unit>',
     text('CompanyName', I, c.name),

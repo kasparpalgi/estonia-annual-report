@@ -24,7 +24,6 @@ export function loadCompanyInputs(): CompanyInputs {
     fiscalYear: num('FISCAL_YEAR'),
     reportScheme: req('REPORT_SCHEME'),
     activityName: req('ACTIVITY_NAME'),
-    priorYearRevenue: num('PRIOR_YEAR_REVENUE'),
     opening: {
       cash: num('OPENING_CASH'),
       receivables: num('OPENING_RECEIVABLES'),
