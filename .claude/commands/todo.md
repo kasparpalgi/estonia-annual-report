@@ -20,7 +20,7 @@ Execute task `$ARGUMENTS` from `/doc/todo/` by number.
 7. Cover with appropriate unit and/or E2E tests what you have done (unless it doesn't make sense). Think senior: critical things only; do not write pointless tests.
 8. Run tests and make sure **all** tests pass (not only the ones affected by this session).
 9. `npx fallow audit --format json` from the repo root and fix any issues it surfaces before finalising.
-10. Update documentation if needed. Commit and push to main. 
+10. Update documentation if needed eg. `README.md`, `AGENTS.md` etc. Commit and push to `main` branch. 
 11. Run `npm run dev` and see from logs if all works as expected. Do it if it makes sense - otherwise I do it.
 
 NB! Don't be stupid and do not run tests and fallow when it makes absolutely no sense! Eg. you do documentation, change button color etc. Running tests and fallow when you made changes that makes now sense to run them.
