@@ -18,4 +18,45 @@ Bank transaction history of Estonian limited company (OÜ) → Estonian taxman a
 
 `npm run dev` categorises the transactions, prints both statements, and writes the
 validated XBRL instance to `output/aastaaruanne-<year>.xbrl` (gitignored — it holds
-real financials). Upload that file at ariregister.rik.ee. `npm test` runs the suite.
+real financials). `npm test` runs the suite.
+
+## Submitting to the registry (ariregister.rik.ee)
+
+After `npm run dev` generates the XBRL file, complete these steps in the portal:
+
+### 1. Upload XBRL
+Upload `output/aastaaruanne-<year>.xbrl` under "Lae üles XBRL-fail". The financial
+statement numbers are pre-filled automatically.
+
+### 2. Select reporting forms
+Under "Aruandlusvormide valik" make sure these are selected:
+- Statement of financial position (detailed)
+- Income statement (scheme 1)
+- Note: Accounting policies for a micro undertaking
+- **Note: Net sales** ← required, easy to miss
+- Note: Labor expense
+- Note: Related parties
+
+### 3. Fill in Note: Net sales
+Open the Note: Net sales form. The XBRL pre-fills "Net sales by operating activities"
+(activity name + current year amount). You must fill in manually:
+- **Net sales by geographical location → Net sales in European Union**: enter current
+  year revenue and prior year revenue (country: Estonia)
+- **Total net sales in European Union** and **Total net sales**: same amounts
+- **Net sales by operating activities → prior year column**: enter prior year revenue
+- All "Total net sales" rows must match across both sections or the form will error
+
+### 4. Fill in field-of-activity breakdown (SISESTA MÜÜGITULU JAOTUS)
+On the **main report overview page**, scroll down and click
+**"SISESTA MÜÜGITULU JAOTUS"**. This is separate from Note: Net sales.
+- EMTAK 2025 code for management/business consulting: **70201**
+  (Äritegevuse ja muu juhtimisalane nõustamine)
+- Amount: total net revenue for the year
+- Must cover ≥ 90% of total sales revenue
+
+### 5. Tegevusaruanne (management report)
+Skip it — voluntary for micro-entities (mikroettevõtja) since 17.01.2025, unless net
+assets fall below the legal minimum (ÄS § 176). Net assets well above threshold → not required.
+
+### 6. Sign and submit
+Click **"Suuna aruanne allkirjastamisele"** and proceed through signing.
