@@ -9,7 +9,7 @@ import type { BalanceSheet, IncomeStatement } from '../statements/model';
 /** Income-statement lines are `duration` facts. */
 export const INCOME_CONCEPTS: Record<keyof IncomeStatement, string | null> = {
   revenue: 'Revenue',
-  goodsMaterialsServices: 'GoodsRawMaterialsAndServices',
+  goodsMaterialsServices: 'OtherOperatingExpense',
   operatingProfit: 'TotalProfitLoss',
   profitBeforeTax: 'TotalProfitLossBeforeTax',
   profitForYear: 'TotalAnnualPeriodProfitLoss',
