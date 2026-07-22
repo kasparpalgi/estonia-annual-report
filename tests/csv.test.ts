@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { join } from 'path';
 import { parseCSV } from '../src/csv';
 
-const TEMPLATE = join('doc', 'Template of statement - transaction-history.csv');
+const TEMPLATE = join('doc', 'transaction-history.csv');
 
 describe('parseCSV', () => {
   it('parses both rows from template', () => {

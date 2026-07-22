@@ -52,12 +52,21 @@ Node libraries, and the domain is small/simple. No reason to switch languages.
 
 Report inputs live in `.env` (not committed; company data). Keys the build reads:
 
+- `COMPANY_NAME` — legal name (`Innovate Invest OÜ`). Also identifies the company
+  as the payer on `OUT` rows: an `OUT` whose payer isn't the company was paid by
+  the owner personally → booked as a shareholder loan, not a company cash outflow.
 - `REGISTRY_CODE` — company registry code (14504365).
 - `LEGAL_ADDRESS` — legal address string.
 - `FISCAL_YEAR` — reporting year (2025).
 - `REPORT_SCHEME` — `mikroettevõtja` (micro-entity abridged report).
 - `MONTHS_WITH_ZERO_BUSINESS_ACTIVITY` — comma list of months with no IN/OUT
   transactions (for 2025: `1,2,3,4,5,6,8,9,10,11,12` — only July had activity).
+- `OPENING_*` — opening balances for `FISCAL_YEAR` (`OPENING_CASH`,
+  `OPENING_RECEIVABLES`, `OPENING_SHARE_CAPITAL`, `OPENING_UNPAID_CAPITAL`,
+  `OPENING_RETAINED_EARNINGS`), taken from the prior year's filed report
+  (`transaction_history/aruanne_<year-1>.pdf`, bilanss at 31.12). Retained
+  earnings already fold in the prior year's rolled-forward result. The company is
+  **not** first-year (founded 2018), so these are non-zero.
 
 2025 is a micro-entity with activity in July only (one IN invoice, one OUT
 payment). A mikroettevõtja files an abridged balance sheet + income statement and

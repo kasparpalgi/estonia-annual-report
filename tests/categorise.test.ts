@@ -3,7 +3,7 @@ import { join } from 'path';
 import { parseCSV } from '../src/csv';
 import { categorise } from '../src/categorise';
 
-const TEMPLATE = join('doc', 'Template of statement - transaction-history.csv');
+const TEMPLATE = join('doc', 'transaction-history.csv');
 
 describe('categorise', () => {
   it('classifies IN as revenue and OUT as expense', () => {
