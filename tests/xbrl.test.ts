@@ -13,6 +13,8 @@ const company: CompanyInputs = {
   legalAddress: 'Pärnu maakond, Saarde vald, Tihemetsa alevik, Asuvere tee 7',
   fiscalYear: 2025,
   reportScheme: 'mikroettevõtja',
+  activityName: 'Konsultatsiooniteenused',
+  priorYearRevenue: 7750,
   opening: { cash: 3422, receivables: 2500, shareCapital: 2500, unpaidCapital: -2500, retainedEarnings: 5922 },
 };
 
@@ -47,7 +49,7 @@ describe('buildXbrl', () => {
     const v = validateXbrl(xml);
     expect(v.wellFormed).toBe(true);
     expect(v.hasSchemaRef).toBe(true);
-    expect(v.contexts).toEqual(expect.arrayContaining(['I-end', 'D-year']));
+    expect(v.contexts).toEqual(expect.arrayContaining(['I-end', 'D-year', 'D-prior']));
     expect(v.units).toContain('EUR');
     expect(v.errors).toEqual([]);
   });
@@ -72,5 +74,14 @@ describe('buildXbrl', () => {
 
   it('omits "Ärikasum" — the taxonomy has no element for it', () => {
     expect(xml).not.toContain('operatingProfit');
+  });
+
+  it('emits net-sales-by-activity tuple with current and prior year values', () => {
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesTuple>');
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesName contextRef="D-year">Konsultatsiooniteenused</et-gaap:NetSalesByOperatingActivitiesName>');
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesValue contextRef="D-year" unitRef="EUR" decimals="0">1527</et-gaap:NetSalesByOperatingActivitiesValue>');
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesValue contextRef="D-prior" unitRef="EUR" decimals="0">7750</et-gaap:NetSalesByOperatingActivitiesValue>');
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesTotal contextRef="D-year" unitRef="EUR" decimals="0">1527</et-gaap:NetSalesByOperatingActivitiesTotal>');
+    expect(xml).toContain('<et-gaap:NetSalesByOperatingActivitiesTotal contextRef="D-prior" unitRef="EUR" decimals="0">7750</et-gaap:NetSalesByOperatingActivitiesTotal>');
   });
 });

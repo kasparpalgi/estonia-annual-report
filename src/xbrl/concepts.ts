@@ -33,11 +33,20 @@ export const BALANCE_CONCEPTS: Record<keyof BalanceSheet, string | null> = {
   totalLiabilitiesAndEquity: 'LiabilitiesAndEquity',
 };
 
+/** Concept names used inside the net-sales-by-activity tuple and its total. */
+const NET_SALES_CONCEPTS = [
+  'NetSalesByOperatingActivitiesName',
+  'NetSalesByOperatingActivitiesValue',
+  'NetSalesByOperatingActivitiesTotal',
+];
+
 /** All concept names the instance will use (excludes skipped display subtotals). */
 export function mappedConcepts(): string[] {
-  return [...Object.values(INCOME_CONCEPTS), ...Object.values(BALANCE_CONCEPTS)].filter(
-    (c): c is string => c !== null,
-  );
+  return [
+    ...Object.values(INCOME_CONCEPTS),
+    ...Object.values(BALANCE_CONCEPTS),
+    ...NET_SALES_CONCEPTS,
+  ].filter((c): c is string => c !== null);
 }
 
 /** Read every element name declared in the taxonomy schema. */
