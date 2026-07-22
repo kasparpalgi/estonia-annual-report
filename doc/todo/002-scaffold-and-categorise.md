@@ -39,8 +39,36 @@ list of transactions in memory. This is the foundation for 003 (statements) and
 
 ## Verification checklist
 
-- [ ] `npm run build` compiles with no TS errors.
-- [ ] `npm test` — all unit tests pass (csv parse + categorise).
-- [ ] `npm run dev` prints sane counts/totals for the template CSV.
-- [ ] `npx fallow audit --format json` clean (no new findings).
-- [ ] Files stay small (≤~100 lines), pure functions, UTF-8.
+- [x] `npm run build` compiles with no TS errors.
+- [x] `npm test` — all unit tests pass (csv parse + categorise).
+- [x] `npm run dev` prints sane counts/totals for the template CSV.
+- [x] `npx fallow audit --format json` clean (no new findings).
+- [x] Files stay small (≤~100 lines), pure functions, UTF-8.
+
+## Results
+
+### Summary
+- Scaffolded TypeScript (strict, Node16 module) + Vitest + tsx setup
+- `src/csv.ts` — parses CSV into typed `Transaction[]` (direction, date, amounts, net, vat)
+- `src/categorise.ts` — pure function classifying IN→revenue / OUT→expense
+- `src/log.ts` — minimal logging helper (console + `logs/<file>`)
+- `src/index.ts` — CLI entry: reads real CSV via `FISCAL_YEAR` env var, logs counts & totals
+- 7 unit tests across 2 test files; all pass
+
+### Files changed
+- Created: `tsconfig.json`, `vitest.config.ts`
+- Created: `src/log.ts`, `src/csv.ts`, `src/categorise.ts`, `src/index.ts`
+- Created: `tests/csv.test.ts`, `tests/categorise.test.ts`
+- Modified: `package.json` (added scripts + devDeps), `.gitignore` (added `/dist`, `/logs`)
+
+### Verification
+- `npm run build` — pass (0 TS errors)
+- `npm test` — 7/7 pass
+- `npm run dev` — prints: Loaded 2 transactions, Revenue 1 rows 1526.80 EUR, Expenses 1 rows 1717.75 EUR
+- fallow audit — verdict pass, 0 new findings (1 inherited issue: `fallow` in deps, pre-existing)
+
+### Deviations
+- Used `module: Node16` (not CommonJS) because TypeScript 7 removed the legacy `node` resolver.
+
+### Human todo
+None.

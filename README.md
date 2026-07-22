@@ -4,15 +4,10 @@ Bank transaction history of Estonian limited company (OÜ) → Estonian taxman a
 
 * Categorise [transactions](transaction_history/2025/transaction-history.csv)
 * Prepares the balance sheet koostab (bilanss) and income statement (kasumiaruanne)
-* Generates XBRL file
+* Generates [et-GAAP XBRL taxonomy](et-gaap-cor_2026-01-01.xsd) file
 
-## Resources
+## Install
 
-* [et-GAAP XBRL taxonomy](et-gaap-cor_2026-01-01.xsd)
-* [AR\TI/FI Claude plugin](https://ar-ti-fi.com/plugins/artifi-ee-annual-report) - Annual report preparation workflow covering all requirements for filing at ariregister.rik.ee - [GitHub repo](https://github.com/ar-ti-fi/plugins/tree/main/artifi-ee-annual-report)
-
-## TODO
-
-* Initialise Claude code and set up best skills, MCP, plugins AGENTS.md, commands (think also not to waste too much tokens)
-* Decide the stack (NodeJS, TypeScript or something else better? what tests (unit? e2e?) and what to use?)
-* Written build plan possibly in multiple sessions
+1. Create `/transaction_history` folder and eg. `2026` in it. See the format how to provide the [statement data CSV] 
+2. Rename `.env.example` to `.env` and add your actual data there
+3. Run `npm i` or whatever pnpm, yarn, etc. you use
