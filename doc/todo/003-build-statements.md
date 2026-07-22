@@ -3,15 +3,17 @@
 > **Model/effort:** Opus 4.8 high. This is the accounting-judgement core — Estonian
 > RTJ/GAAP micro/small-entity statement structure. Correctness matters most here.
 
-## Blocked until the human provides (see AGENTS.md open questions)
+## Inputs (resolved — read from `.env`, see AGENTS.md)
 
-- Company registry code, legal address, fiscal year (period start/end).
-- Whether 2025 is the first accounting year and any opening balances.
-- Report scheme: **mikroettevõtja** vs **väikeettevõtja** (decides which
-  abbreviated statement layout and which et-gaap concepts apply).
+- `REGISTRY_CODE=14504365`, `LEGAL_ADDRESS`, `FISCAL_YEAR=2025`.
+- `REPORT_SCHEME=mikroettevõtja` → abridged micro-entity layout; no management
+  report (tegevusaruanne).
+- `MONTHS_WITH_ZERO_BUSINESS_ACTIVITY=1,2,3,4,5,6,8,9,10,11,12` → activity in July
+  only. 2025 is treated as the reporting year; no separate opening balances given,
+  so opening equity/cash start at zero unless the company inputs say otherwise —
+  confirm with the human if the numbers don't tie out.
 
-Do not guess these. Confirm them at the start of the session; if missing, stop
-and ask.
+Load `.env` (e.g. add `dotenv`) and validate these are present before building.
 
 ## Goal
 

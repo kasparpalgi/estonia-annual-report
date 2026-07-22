@@ -48,16 +48,27 @@ Node libraries, and the domain is small/simple. No reason to switch languages.
 - Estonian text (ä, ö, ü, õ) appears in data and reports — keep files UTF-8.
 - Commit + push to `main` on completion; skip tests/fallow only for pure docs.
 
-## Recommended external tooling (human decision)
+## Configuration — `.env` (gitignored)
 
-- **AR/TI/FI Claude plugin** `artifi-ee-annual-report` — an Estonian annual-report
-  filing workflow for ariregister.rik.ee. Directly relevant; consider installing
-  it as a reference. https://github.com/ar-ti-fi/plugins/tree/main/artifi-ee-annual-report
+Report inputs live in `.env` (not committed; company data). Keys the build reads:
+
+- `REGISTRY_CODE` — company registry code (14504365).
+- `LEGAL_ADDRESS` — legal address string.
+- `FISCAL_YEAR` — reporting year (2025).
+- `REPORT_SCHEME` — `mikroettevõtja` (micro-entity abridged report).
+- `MONTHS_WITH_ZERO_BUSINESS_ACTIVITY` — comma list of months with no IN/OUT
+  transactions (for 2025: `1,2,3,4,5,6,8,9,10,11,12` — only July had activity).
+
+2025 is a micro-entity with activity in July only (one IN invoice, one OUT
+payment). A mikroettevõtja files an abridged balance sheet + income statement and
+is exempt from the management report (tegevusaruanne) — keep the report minimal.
+
+## External tooling decisions
+
+- **AR/TI/FI plugin** `artifi-ee-annual-report` — **not installed** as a standing
+  plugin. It's an interactive filing *workflow*, not a library our TS pipeline can
+  call, and it adds per-session context cost for a deterministic code goal. Use its
+  public repo as a reference during task 004 if a requirements question comes up.
+  https://github.com/ar-ti-fi/plugins/tree/main/artifi-ee-annual-report
 - `fallow-mcp` ships with the installed `fallow` dep. Not wired as an always-on
   MCP server (to save agent context); the CLI is used in the `/todo` gate instead.
-
-## Open questions blocking real filing (needed before task 003)
-
-- Company identity for XBRL general info: registry code, legal address, fiscal year.
-- Full-year 2025 data — only July is present so far; opening balances?
-- Report scheme: micro-entity (mikroettevõtja) vs small-entity (väikeettevõtja).
