@@ -1,0 +1,20 @@
+{
+  "name": "estonia-annual-report",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/kasparpalgi/estonia-annual-report#readme",
+  "bugs": {
+    "url": "https://github.com/kasparpalgi/estonia-annual-report/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kasparpalgi/estonia-annual-report.git"
+  },
+  "license": "ISC",
+  "author": "Kaspar L. Palgi",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
