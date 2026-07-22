@@ -13,3 +13,9 @@ Bank transaction history of Estonian limited company (OÜ) → Estonian taxman a
     - Run in Claude Code or your favourite agent `/todo 005`
 2. Rename `.env.example` to `.env` and add your actual data there
 3. Run `npm i` or whatever pnpm, yarn, etc. you use
+
+## Run
+
+`npm run dev` categorises the transactions, prints both statements, and writes the
+validated XBRL instance to `output/aastaaruanne-<year>.xbrl` (gitignored — it holds
+real financials). Upload that file at ariregister.rik.ee. `npm test` runs the suite.

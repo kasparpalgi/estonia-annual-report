@@ -31,6 +31,12 @@ Node libraries, and the domain is small/simple. No reason to switch languages.
 - `doc/todo/NNN-*.md` — sequenced task files; run with `/todo NNN`.
 - `et-gaap-cor_2026-01-01.xsd` — official taxonomy (3,439 concepts, English names,
   e.g. `CashAndCashEquivalents`, `Assets`, `Equity`, `ProfitLoss`).
+- `src/xbrl/` — statement→et-gaap concept map (`concepts.ts`), XBRL instance
+  builder (`build.ts`), and structural validator (`validate.ts`). Concepts are
+  verified against the taxonomy at build time; an unmapped model field is a
+  compile error. "Ärikasum" is a display-only subtotal with no et-gaap element.
+- `output/` — **gitignored**. `npm run dev` writes `aastaaruanne-<year>.xbrl` here
+  (real financials + registry code). Upload it manually at ariregister.rik.ee.
 - `logs/` — runtime logs (created by the app; see `/todo` logging rules).
 
 ## Transaction CSV schema

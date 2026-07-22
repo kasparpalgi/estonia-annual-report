@@ -32,14 +32,84 @@ upload at ariregister.rik.ee, and validate it.
 
 ## Verification checklist
 
-- [ ] Every statement line resolves to a taxonomy concept; build fails otherwise.
-- [ ] Generated file is well-formed XML with valid contexts, units, and schemaRef.
-- [ ] Balance sheet ties out inside the instance.
-- [ ] `npm test` — full suite green (002 + 003 + 004).
-- [ ] `npx fallow audit --format json` clean.
-- [ ] Manual sanity: open the file / dry-run against the register's validator.
+- [x] Every statement line resolves to a taxonomy concept; build fails otherwise.
+- [x] Generated file is well-formed XML with valid contexts, units, and schemaRef.
+- [x] Balance sheet ties out inside the instance.
+- [x] `npm test` — full suite green (002 + 003 + 004): 20/20.
+- [x] `npx fallow audit --format json` clean (verdict pass, 0 introduced findings).
+- [x] Manual sanity: opened `output/aastaaruanne-2025.xbrl`; ties out 7861.06.
 
 ## Human todo after this task
 
-- Upload `output/aastaaruanne-<year>.xbrl` at ariregister.rik.ee and confirm the
+- Upload `output/aastaaruanne-2025.xbrl` at ariregister.rik.ee and confirm the
   register's own validator accepts it before actual submission.
+- **`schemaRef` href** is the bare taxonomy filename (`et-gaap-cor_2026-01-01.xsd`).
+  If the register rejects it, change `SCHEMA_REF` in `src/xbrl/build.ts` to the
+  register's hosted entry-point URL. Same for `ENTITY_SCHEME` (`http://ariregister.rik.ee`).
+- The register auto-computes filing extras from the 2024 filing not modelled here:
+  *tegevusaruanne* (micro-entity is exempt), *müügitulu jaotus* (EMTAK 4778), and
+  *kahjumi katmise ettepanek*. Add these in the portal form if it asks.
+
+## Plan & actions (session — Opus 4.8)
+
+### Concept mapping (verified against `et-gaap-cor_2026-01-01.xsd`)
+Every statement line maps to a real et-gaap element, confirmed by reading the
+schema's equity/asset/liability/income sections:
+
+| Statement line | et-gaap concept | period |
+| --- | --- | --- |
+| Müügitulu | `Revenue` | duration |
+| Kaubad, toore, materjal ja teenused | `GoodsRawMaterialsAndServices` | duration |
+| Kasum enne tulumaksustamist | `TotalProfitLossBeforeTax` | duration |
+| Aruandeaasta kasum | `TotalProfitLoss` | duration |
+| Raha | `CashAndCashEquivalents` | instant |
+| Nõuded ja ettemaksed | `ShortTermReceivablesAndPrepayments` | instant |
+| Kokku käibevarad / Kokku varad | `CurrentAssets` / `Assets` | instant |
+| Laenukohustised | `CurrentLoans` | instant |
+| Maksuvõlad | `TaxPayables` | instant |
+| Kokku lühiajalised kohustised / Kokku kohustised | `CurrentLiabilities` / `Liabilities` | instant |
+| Osakapital nimiväärtuses | `IssuedCapital` | instant |
+| Sissemaksmata osakapital | `UnpaidCapital` | instant |
+| Eelmiste per. jaotamata kasum | `RetainedEarningsLoss` | instant |
+| Aruandeaasta kasum (bilanss) | `AnnualPeriodProfitLoss` | instant |
+| Kokku omakapital | `Equity` | instant |
+| Kokku kohustised ja omakapital | `LiabilitiesAndEquity` | instant |
+
+### Judgment call
+- **"Ärikasum (kahjum)" has no et-gaap element** — it is a presentation-only
+  subtotal. For a micro-entity with no financial/tax items it equals
+  profit-before-tax. It is intentionally not emitted as an XBRL fact (mapped to
+  `null` in `concepts.ts`). Every other model field maps to a real concept; the
+  `Record<keyof …>` type makes an unmapped field a compile error.
+
+## Results
+
+### Summary
+- Built `src/xbrl/{concepts,build,validate}.ts`: a compile-safe concept map that
+  fails loudly if a mapped concept is absent from the taxonomy, an instance
+  builder emitting a well-formed et-gaap XBRL document, and a structural validator.
+- `src/index.ts` now writes `output/aastaaruanne-2025.xbrl` (21 facts, EUR,
+  `decimals="2"`) and logs a validation summary to `logs/xbrl.log`; it throws if
+  validation fails.
+- Instance ties out inside the document: Assets 7861.06 = Liabilities 2130.01 +
+  Equity 5731.05. Instant context for the balance sheet, duration for the income
+  statement, entity = registry code 14504365, unit EUR.
+
+### Files changed
+- Created: `src/xbrl/concepts.ts`, `src/xbrl/build.ts`, `src/xbrl/validate.ts`,
+  `tests/xbrl.test.ts`.
+- Modified: `src/index.ts` (build + validate + write XBRL), `.gitignore`
+  (`/output`), `package.json` (`fast-xml-parser` dep), `AGENTS.md` (XBRL step +
+  output note).
+
+### Verification
+- `npm run build` — pass (0 TS errors).
+- `npm test` — 20/20 pass (csv 4, categorise 3, build 6, xbrl 7).
+- `npm run dev` — writes the instance; validation passes; balance ties out.
+- `npx fallow audit` — verdict pass, 0 introduced findings (1 inherited: `fallow`
+  in deps, pre-existing).
+
+### Deviations
+- Added a lightweight dependency `fast-xml-parser` for well-formedness/structural
+  validation (todo allowed "a lightweight XML lib"). No heavy XBRL processor.
+- `output/` is gitignored — the instance carries real company financials.

@@ -2,4 +2,5 @@
 /transaction_history
 /dist
 /logs
+/output
 .env
