@@ -18,7 +18,7 @@ const esc = (s: string): string =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const money = (concept: string, ctx: string, n: number): string =>
-  `  <et-gaap:${concept} contextRef="${ctx}" unitRef="EUR" decimals="2">${n.toFixed(2)}</et-gaap:${concept}>`;
+  `  <et-gaap:${concept} contextRef="${ctx}" unitRef="EUR" decimals="0">${Math.round(n)}</et-gaap:${concept}>`;
 
 const text = (concept: string, ctx: string, v: string): string =>
   `  <et-gaap:${concept} contextRef="${ctx}">${esc(v)}</et-gaap:${concept}>`;

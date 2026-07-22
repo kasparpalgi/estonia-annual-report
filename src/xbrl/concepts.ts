@@ -14,7 +14,7 @@ export const INCOME_CONCEPTS: Record<keyof IncomeStatement, string | null> = {
   // For a micro-entity with no financial/tax items it equals profitBeforeTax.
   operatingProfit: null,
   profitBeforeTax: 'TotalProfitLossBeforeTax',
-  profitForYear: 'TotalProfitLoss',
+  profitForYear: 'TotalAnnualPeriodProfitLoss',
 };
 
 /** Balance-sheet lines are `instant` facts. */

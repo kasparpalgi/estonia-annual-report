@@ -54,19 +54,19 @@ describe('buildXbrl', () => {
 
   it('ties out the balance sheet inside the instance', () => {
     const v = validateXbrl(xml);
-    expect(v.assets).toBeCloseTo(7861.06);
+    expect(v.assets).toBe(7861);
     expect(v.balances).toBe(true);
   });
 
   it('tags the key facts with the right values and contexts', () => {
-    expect(xml).toContain('<et-gaap:Revenue contextRef="D-year" unitRef="EUR" decimals="2">1526.80</et-gaap:Revenue>');
-    expect(xml).toContain('<et-gaap:CurrentLoans contextRef="I-end" unitRef="EUR" decimals="2">2130.01</et-gaap:CurrentLoans>');
-    expect(xml).toContain('<et-gaap:TotalProfitLoss contextRef="D-year" unitRef="EUR" decimals="2">-190.95</et-gaap:TotalProfitLoss>');
+    expect(xml).toContain('<et-gaap:Revenue contextRef="D-year" unitRef="EUR" decimals="0">1527</et-gaap:Revenue>');
+    expect(xml).toContain('<et-gaap:CurrentLoans contextRef="I-end" unitRef="EUR" decimals="0">2130</et-gaap:CurrentLoans>');
+    expect(xml).toContain('<et-gaap:TotalAnnualPeriodProfitLoss contextRef="D-year" unitRef="EUR" decimals="0">-191</et-gaap:TotalAnnualPeriodProfitLoss>');
   });
 
   it('populates general info and escapes the entity identifier', () => {
     expect(xml).toContain('<et-gaap:CompanyName contextRef="I-end">Innovate Invest OÜ</et-gaap:CompanyName>');
-    expect(xml).toContain('scheme="http://ariregister.rik.ee">14504365</xbrli:identifier>');
+    expect(xml).toContain('scheme="http://xbrl.eesti.ee/estonian_commercial_register">14504365</xbrli:identifier>');
     expect(xml).toContain('<et-gaap:LegalAddress contextRef="I-end">');
   });
 
