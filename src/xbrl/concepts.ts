@@ -10,9 +10,7 @@ import type { BalanceSheet, IncomeStatement } from '../statements/model';
 export const INCOME_CONCEPTS: Record<keyof IncomeStatement, string | null> = {
   revenue: 'Revenue',
   goodsMaterialsServices: 'GoodsRawMaterialsAndServices',
-  // "Ärikasum (kahjum)" has no et-gaap element — it is a presentation subtotal.
-  // For a micro-entity with no financial/tax items it equals profitBeforeTax.
-  operatingProfit: null,
+  operatingProfit: 'TotalProfitLoss',
   profitBeforeTax: 'TotalProfitLossBeforeTax',
   profitForYear: 'TotalAnnualPeriodProfitLoss',
 };
